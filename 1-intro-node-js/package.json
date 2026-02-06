@@ -1,0 +1,24 @@
+{
+  "name": "node-farm",
+  "version": "1.0.0",
+  "description": "This is my first api with nodejs in vanilla code",
+  "keywords": [
+    "Nodejs",
+    "api"
+  ],
+  "license": "MIT",
+  "author": "Jesus Antonio Estrada Jiménez",
+  "type": "commonjs",
+  "main": "./web-server/index.js",
+  "scripts": {
+    "run": "node ./web-server/index.js",
+    "dev": "nodemon ./web-server/index.js"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.2",
+    "slugify": "^1.6.6"
+  }
+}

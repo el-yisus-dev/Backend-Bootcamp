@@ -1,0 +1,58 @@
+[
+    {
+      "ID": 1,
+      "productName": "Apple",
+      "image": "🍎",
+      "from": "USA",
+      "nutrients": ["Fiber", "Vitamin C", "Potassium"],
+      "quantity": 10,
+      "price": 1.5,
+      "organic": true,
+      "description": "Fresh red apples with a sweet and crisp flavor."
+    },
+    {
+      "ID": 2,
+      "productName": "Banana",
+      "image": "🍌",
+      "from": "Ecuador",
+      "nutrients": ["Vitamin B6", "Vitamin C", "Magnesium"],
+      "quantity": 20,
+      "price": 0.5,
+      "organic": false,
+      "description": "Yellow bananas, perfect for a quick snack or smoothie."
+    },
+    {
+      "ID": 3,
+      "productName": "Orange",
+      "image": "🍊",
+      "from": "Spain",
+      "nutrients": ["Vitamin C", "Fiber", "Folate"],
+      "quantity": 15,
+      "price": 0.8,
+      "organic": true,
+      "description": "Juicy and refreshing oranges, ideal for fresh juice."
+    },
+    {
+      "ID": 4,
+      "productName": "Strawberry",
+      "image": "🍓",
+      "from": "Mexico",
+      "nutrients": ["Vitamin C", "Manganese", "Antioxidants"],
+      "quantity": 12,
+      "price": 2.0,
+      "organic": false,
+      "description": "Sweet and vibrant strawberries, perfect for desserts."
+    },
+    {
+      "ID": 5,
+      "productName": "Watermelon",
+      "image": "🍉",
+      "from": "Brazil",
+      "nutrients": ["Vitamin C", "Vitamin A", "Lycopene"],
+      "quantity": 5,
+      "price": 3.0,
+      "organic": true,
+      "description": "Large, juicy watermelons with a refreshing taste."
+    }
+  ]
+    
