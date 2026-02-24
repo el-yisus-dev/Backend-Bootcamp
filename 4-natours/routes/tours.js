@@ -75,7 +75,7 @@ router.post("/", (req, res) => {
 router.get("/:id", (req, res) => {
   const { id } = req.params;
 
-  const idNum = id * 1; // automanictly convert a number
+  const idNum = id * 1;
 
   if (isNaN(idNum)) {
     return res.status(400).json({
@@ -101,5 +101,48 @@ router.get("/:id", (req, res) => {
   });
 });
 
+router.patch("/:id", (req, res) => {
+
+  const { id } = req.params;
+  const idNum = id * 1;
+
+  if (isNaN(idNum)) {
+    return res.status(400).json({
+      status: "error",
+      message: "Please introduce a valid ID"
+    });
+  }
+
+  const tours = JSON.parse(
+    fs.readFileSync(`${__dirname}/../dev-data/tours-simple.json`)
+  );
+
+  const tourExists = tours.find(t => t.id === idNum);
+
+  if (!tourExists) {
+    return res.status(404).json({
+      status: "fail",
+      message: "Tour not found"
+    });
+  }
+
+  const updatedTours = tours.map(tour =>
+    tour.id === idNum ? { ...tour, ...req.body } : tour
+  );
+
+  // Persistimos cambios
+  fs.writeFileSync(
+    `${__dirname}/../dev-data/tours-simple.json`,
+    JSON.stringify(updatedTours, null, 2)
+  );
+
+  res.status(200).json({
+    status: "success",
+    data: {
+      tour: updatedTours.find(t => t.id === idNum)
+    }
+  });
+
+});
 
 module.exports = router
