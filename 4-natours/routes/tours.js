@@ -6,7 +6,6 @@ const fs = require("fs");
 const router = Router()
 
 
-
 router.get("/", (req, res) => {
     
     const tours = JSON.parse(fs.readFileSync(`${__dirname}/../dev-data/tours-simple.json`));
@@ -130,7 +129,6 @@ router.patch("/:id", (req, res) => {
     tour.id === idNum ? { ...tour, ...req.body } : tour
   );
 
-  // Persistimos cambios
   fs.writeFileSync(
     `${__dirname}/../dev-data/tours-simple.json`,
     JSON.stringify(updatedTours, null, 2)
@@ -143,6 +141,25 @@ router.patch("/:id", (req, res) => {
     }
   });
 
+});
+
+router.delete("/:id", (req, res) => {
+  const { id } = req.params;
+  
+  if(!id) {
+    res.status(400).json({
+      status: "fail",
+      message: "Invalid Id"
+    })
+    return;
+  }
+
+  res.status(200).json({
+    status: "success",
+    data: {
+      tour: null
+    }
+  });
 });
 
 module.exports = router
