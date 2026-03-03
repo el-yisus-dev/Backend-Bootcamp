@@ -3,6 +3,7 @@ const { Router } = require("express");
 const routerTours = require("./tours");
 
 const routerAPI = app => {
+    
     const router = Router()
     
     app.get('/', (req, res) => {
