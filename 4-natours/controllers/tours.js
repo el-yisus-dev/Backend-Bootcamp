@@ -1,10 +1,12 @@
 const  fs = require("fs");
 
 const getAllTours = (req, res) => {
+
     const tours = JSON.parse(fs.readFileSync(`${__dirname}/../dev-data/tours-simple.json`));
     
     res.json({
         status: "success",
+        requestedAt: req.requestTime, // Adding this property in a middleware at the app.js code 
         results: tours.length,
         data: {
             tours
