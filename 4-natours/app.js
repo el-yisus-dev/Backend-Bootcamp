@@ -1,4 +1,5 @@
 const express = require('express');
+const morgan = require('morgan');
 
 const { config } = require('../1-intro-node-js/config');
 const routerAPI = require("./routes")
@@ -7,6 +8,9 @@ const app = express()
 
 // middleware to read JSON
 app.use(express.json());
+
+// Set up morgan
+app.use(morgan("dev"));
 
 // my own middleware 
 app.use((req, res, next) => {
@@ -18,7 +22,7 @@ app.use((req, res, next) => {
     next()
 });
 
-
+// Router
 routerAPI(app);
 
 
