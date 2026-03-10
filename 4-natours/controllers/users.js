@@ -19,11 +19,14 @@ const createUser = async (req, res) => {
 };
 
 const getUserById = async (req, res) => {
-        
+    const { id } = req.params;
+
+
         res.status(200).json({
             message: "success",
             data: {
-                message: "users baby....."
+                message: "users baby.....",
+                id
             }
         });
 };

@@ -7,10 +7,14 @@ const router = Router();
 
 router
     .get("/", getAllUsers)
-    .post("/", createUser)
-    .get("/:id", getUserById)
-    .patch("/:id", updateUser)
-    .delete("/:id", deleteUser)
+    .post("/", createUser);
+
+//Another way to handle the routes
+router
+    .route("/:id")
+    .get(getUserById)
+    .patch(updateUser)
+    .delete(deleteUser)
 
 
 module.exports = router;
