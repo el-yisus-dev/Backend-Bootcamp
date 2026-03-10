@@ -1,4 +1,4 @@
-const getAllUsers = async (req, res) => {
+exports.getAllUsers = async (req, res) => {
         
         res.status(200).json({
             message: "success",
@@ -8,7 +8,7 @@ const getAllUsers = async (req, res) => {
         });
 };
 
-const createUser = async (req, res) => {
+exports.createUser = async (req, res) => {
         
         res.status(200).json({
             message: "success",
@@ -18,7 +18,7 @@ const createUser = async (req, res) => {
         });
 };
 
-const getUserById = async (req, res) => {
+exports.getUserById = async (req, res) => {
     const { id } = req.params;
 
 
@@ -31,7 +31,7 @@ const getUserById = async (req, res) => {
         });
 };
 
-const updateUser = async (req, res) => {
+exports.updateUser = async (req, res) => {
         
         res.status(200).json({
             message: "success",
@@ -41,7 +41,7 @@ const updateUser = async (req, res) => {
         });
 };
 
-const deleteUser = async (req, res) => {
+exports.deleteUser = async (req, res) => {
         
         res.status(200).json({
             message: "success",
@@ -50,11 +50,3 @@ const deleteUser = async (req, res) => {
             }
         });
 };
-
-module.exports = {
-    getAllUsers,
-    getUserById,
-    updateUser,
-    deleteUser,
-    createUser
-}
