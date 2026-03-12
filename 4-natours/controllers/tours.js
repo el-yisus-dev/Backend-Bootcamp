@@ -67,18 +67,12 @@ const createTours = (req, res) => {
 }
 
 const getTourById = (req, res) => {
-  const { id } = req.params;
 
-  const idNum = id * 1;
+  const { id } = res.locals;
 
-  if (isNaN(idNum)) {
-    return res.status(400).json({
-      status: "error",
-      message: "Please introduce a valid ID"
-    });
-  }
-
-  const tours = JSON.parse(fs.readFileSync(`${__dirname}/../dev-data/tours-simple.json`)).find(element => element.id === idNum);
+  const tours = JSON.parse(
+    fs.readFileSync(`${__dirname}/../dev-data/tours-simple.json`)
+  ).find(element => element.id === id);
 
   if (!tours) {
     return res.status(404).json({
@@ -89,29 +83,19 @@ const getTourById = (req, res) => {
 
   res.json({
     status: "success",
-    data: {
-      ...tours
-    }
+    data: tours
   });
-}
+};
 
 const updateTour = (req, res) => {
 
-  const { id } = req.params;
-  const idNum = id * 1;
-
-  if (isNaN(idNum)) {
-    return res.status(400).json({
-      status: "error",
-      message: "Please introduce a valid ID"
-    });
-  }
+  const { id } = res.locals;
 
   const tours = JSON.parse(
     fs.readFileSync(`${__dirname}/../dev-data/tours-simple.json`)
   );
 
-  const tourExists = tours.find(t => t.id === idNum);
+  const tourExists = tours.find(t => t.id === id);
 
   if (!tourExists) {
     return res.status(404).json({
@@ -121,7 +105,7 @@ const updateTour = (req, res) => {
   }
 
   const updatedTours = tours.map(tour =>
-    tour.id === idNum ? { ...tour, ...req.body } : tour
+    tour.id === id ? { ...tour, ...req.body } : tour
   );
 
   fs.writeFileSync(
@@ -132,22 +116,14 @@ const updateTour = (req, res) => {
   res.status(200).json({
     status: "success",
     data: {
-      tour: updatedTours.find(t => t.id === idNum)
+      tour: updatedTours.find(t => t.id === id)
     }
   });
 
 }
 
 const deleteTour = (req, res) => {
-  const { id } = req.params;
-  
-  if(!id) {
-    res.status(400).json({
-      status: "fail",
-      message: "Invalid Id"
-    })
-    return;
-  }
+   const { id } = res.locals;
 
   res.status(200).json({
     status: "success",
@@ -157,11 +133,28 @@ const deleteTour = (req, res) => {
   });
 }
 
+const checkId = (req, res, next, val) => {
+
+  console.log(`Tour id is: ${val}`);
+
+if (isNaN(Number(val))){
+   return res.status(400).json({
+      status: "error",
+      message: "Please introduce a valid ID"
+    });
+  }
+
+  res.locals.id = Number(val);
+
+  next();
+};
+
 module.exports = {
   deleteTour,
   updateTour,
   getAllTours,
   getTourById,
   updateTour,
-  createTours
+  createTours,
+  checkId
 }

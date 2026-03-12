@@ -1,9 +1,13 @@
 const { Router } = require("express");
 
-const { getAllTours, createTours, getTourById, updateTour, deleteTour } = require("../controllers/tours");
+const { getAllTours, createTours, getTourById, updateTour, deleteTour, checkId } = require("../controllers/tours");
 
 
 const router = Router()
+
+// Using a param middleware
+// In long apis, this method is rarely used, better we use zod .get("/:id", validateId, getTourById)
+router.param("id", checkId);
 
 // Another way to handle the methods and controllers
 router
