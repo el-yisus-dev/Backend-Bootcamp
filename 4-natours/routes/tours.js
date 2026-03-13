@@ -1,6 +1,7 @@
 const { Router } = require("express");
 
 const { getAllTours, createTours, getTourById, updateTour, deleteTour, checkId } = require("../controllers/tours");
+const { checkBodytour } = require("../middlewares/tourMiddleware");
 
 
 const router = Router()
@@ -12,7 +13,7 @@ router.param("id", checkId);
 // Another way to handle the methods and controllers
 router
   .get("/", getAllTours)
-  .post("/", createTours)
+  .post("/", checkBodytour, createTours)
   .get("/:id", getTourById)
   .patch("/:id", updateTour)
   .delete("/:id", deleteTour)
