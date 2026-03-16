@@ -10,10 +10,7 @@ const app = express()
 app.use(express.json());
 
 // Set up morgan
-app.use(morgan("dev"));
-
-// Set up to handle static files
-app.use(express.static(`${__dirname}/public`))
+if (process.env.NODE_ENV === "development") app.use(morgan("dev"));
 
 // my own middleware 
 app.use((req, res, next) => {
@@ -28,6 +25,9 @@ app.use((req, res, next) => {
 // Router
 routerAPI(app);
 
+// Set up to handle static files
+// I need to set up this middleware after the routes to avoid routes errors
+app.use(express.static(`${__dirname}/public`))
 
 app.listen(config.port, () => {
     console.log(`App running on http://localhost:${config.port}`);
