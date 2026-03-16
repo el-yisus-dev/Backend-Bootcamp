@@ -1,18 +1,19 @@
-const  fs = require("fs");
+const fs = require('fs');
 
 const getAllTours = (req, res) => {
+  const tours = JSON.parse(
+    fs.readFileSync(`${__dirname}/../dev-data/tours-simple.json`),
+  );
 
-    const tours = JSON.parse(fs.readFileSync(`${__dirname}/../dev-data/tours-simple.json`));
-    
-    res.json({
-        status: "success",
-        requestedAt: req.requestTime, // Adding this property in a middleware at the app.js code 
-        results: tours.length,
-        data: {
-            tours
-        }
-    })
-}
+  res.json({
+    status: 'success',
+    requestedAt: req.requestTime, // Adding this property in a middleware at the app.js code
+    results: tours.length,
+    data: {
+      tours,
+    },
+  });
+};
 
 const createTours = (req, res) => {
   const {
@@ -27,11 +28,11 @@ const createTours = (req, res) => {
     description,
     imageCover,
     images,
-    startDates
+    startDates,
   } = req.body;
 
   const tours = JSON.parse(
-    fs.readFileSync(`${__dirname}/../dev-data/tours-simple.json`)
+    fs.readFileSync(`${__dirname}/../dev-data/tours-simple.json`),
   );
 
   const newTour = {
@@ -47,100 +48,96 @@ const createTours = (req, res) => {
     description,
     imageCover,
     images,
-    startDates
+    startDates,
   };
 
   const newData = [...tours, newTour];
-  
+
   fs.writeFileSync(
     `${__dirname}/../dev-data/tours-simple.json`,
-    JSON.stringify(newData, null, 2)
+    JSON.stringify(newData, null, 2),
   );
 
   res.status(201).json({
-        status: "success",
-        message: "New tour created 👍",
-        data: {
-            tour: newData
-        }
-    });
-}
+    status: 'success',
+    message: 'New tour created 👍',
+    data: {
+      tour: newData,
+    },
+  });
+};
 
 const getTourById = (req, res) => {
-
   const { id } = res.locals;
 
   const tours = JSON.parse(
-    fs.readFileSync(`${__dirname}/../dev-data/tours-simple.json`)
-  ).find(element => element.id === id);
+    fs.readFileSync(`${__dirname}/../dev-data/tours-simple.json`),
+  ).find((element) => element.id === id);
 
   if (!tours) {
     return res.status(404).json({
-      status: "fail",
-      message: "Tour not found"
+      status: 'fail',
+      message: 'Tour not found',
     });
   }
 
   res.json({
-    status: "success",
-    data: tours
+    status: 'success',
+    data: tours,
   });
 };
 
 const updateTour = (req, res) => {
-
   const { id } = res.locals;
 
   const tours = JSON.parse(
-    fs.readFileSync(`${__dirname}/../dev-data/tours-simple.json`)
+    fs.readFileSync(`${__dirname}/../dev-data/tours-simple.json`),
   );
 
-  const tourExists = tours.find(t => t.id === id);
+  const tourExists = tours.find((t) => t.id === id);
 
   if (!tourExists) {
     return res.status(404).json({
-      status: "fail",
-      message: "Tour not found"
+      status: 'fail',
+      message: 'Tour not found',
     });
   }
 
-  const updatedTours = tours.map(tour =>
-    tour.id === id ? { ...tour, ...req.body } : tour
+  const updatedTours = tours.map((tour) =>
+    tour.id === id ? { ...tour, ...req.body } : tour,
   );
 
   fs.writeFileSync(
     `${__dirname}/../dev-data/tours-simple.json`,
-    JSON.stringify(updatedTours, null, 2)
+    JSON.stringify(updatedTours, null, 2),
   );
 
   res.status(200).json({
-    status: "success",
+    status: 'success',
     data: {
-      tour: updatedTours.find(t => t.id === id)
-    }
+      tour: updatedTours.find((t) => t.id === id),
+    },
   });
-
-}
+};
 
 const deleteTour = (req, res) => {
-   const { id } = res.locals;
+  const { id } = res.locals;
 
   res.status(200).json({
-    status: "success",
+    status: 'success',
     data: {
-      tour: null
-    }
+      tour: null,
+    },
   });
-}
+};
 
 const checkId = (req, res, next, val) => {
-
   console.log(`Tour id is: ${val}`);
 
-if (isNaN(Number(val))){
-   return res.status(400).json({
-      status: "error",
-      message: "Please introduce a valid ID"
+  if (Number.isNaN(Number(val))) {
+    return res.status(400).json({
+      status: 'error',
+      message: 'Please introduce a valid ID',
     });
   }
 
@@ -154,7 +151,6 @@ module.exports = {
   updateTour,
   getAllTours,
   getTourById,
-  updateTour,
   createTours,
-  checkId
-}
+  checkId,
+};
