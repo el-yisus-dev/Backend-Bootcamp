@@ -8,4 +8,6 @@ dotenv.config({ path: path.join(__dirname, "../../.env") });
 exports.config = {
   apiKeyCats: process.env.API_KEY_CATS,
   port: process.env.PORT,
+  dbUri: process.env.DB_URI,
+  dbLocal: process.env.DB_LOCAL,
 };

@@ -2,11 +2,21 @@
 /* eslint-disable node/no-unpublished-require */
 const express = require('express');
 const morgan = require('morgan');
+const mongoose = require('mongoose');
 
 const { config } = require('../1-intro-node-js/config');
 const routerAPI = require('./routes');
 
 const app = express();
+
+// Conecting about the database
+try {
+  mongoose
+    .connect(config.dbLocal)
+    .then(console.log(`DB connected succesfully`));
+} catch (error) {
+  console.log(error);
+}
 
 // middleware to read JSON
 app.use(express.json());
