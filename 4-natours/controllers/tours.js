@@ -1,3 +1,4 @@
+/* eslint-disable node/no-unsupported-features/es-syntax */
 const fs = require('fs');
 
 const getAllTours = (req, res) => {
@@ -126,14 +127,13 @@ const deleteTour = (req, res) => {
   res.status(200).json({
     status: 'success',
     data: {
+      id,
       tour: null,
     },
   });
 };
 
 const checkId = (req, res, next, val) => {
-  console.log(`Tour id is: ${val}`);
-
   if (Number.isNaN(Number(val))) {
     return res.status(400).json({
       status: 'error',
