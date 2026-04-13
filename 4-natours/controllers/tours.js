@@ -1,69 +1,36 @@
 /* eslint-disable node/no-unsupported-features/es-syntax */
 const fs = require('fs');
+const { Tour } = require('../models/tours');
 
-const getAllTours = (req, res) => {
-  const tours = JSON.parse(
-    fs.readFileSync(`${__dirname}/../dev-data/tours-simple.json`),
-  );
+const getAllTours = async (req, res) => {
+  const tours = await Tour.find();
 
   res.json({
     status: 'success',
     requestedAt: req.requestTime, // Adding this property in a middleware at the app.js code
-    results: tours.length,
+    result: tours.length,
     data: {
       tours,
     },
   });
 };
 
-const createTours = (req, res) => {
-  const {
+const createTours = async (req, res) => {
+  const { name, rating, price } = req.body;
+
+  const newTour = new Tour({
     name,
-    duration,
-    maxGroupSize,
-    difficulty,
-    ratingsAverage,
-    ratingsQuantity,
+    rating,
     price,
-    summary,
-    description,
-    imageCover,
-    images,
-    startDates,
-  } = req.body;
+  });
 
-  const tours = JSON.parse(
-    fs.readFileSync(`${__dirname}/../dev-data/tours-simple.json`),
-  );
-
-  const newTour = {
-    id: tours[tours.length - 1].id + 1,
-    name,
-    duration,
-    maxGroupSize,
-    difficulty,
-    ratingsAverage,
-    ratingsQuantity,
-    price,
-    summary,
-    description,
-    imageCover,
-    images,
-    startDates,
-  };
-
-  const newData = [...tours, newTour];
-
-  fs.writeFileSync(
-    `${__dirname}/../dev-data/tours-simple.json`,
-    JSON.stringify(newData, null, 2),
-  );
+  const newTourData = await newTour.save();
 
   res.status(201).json({
     status: 'success',
     message: 'New tour created 👍',
     data: {
-      tour: newData,
+      tour: newTourData,
     },
   });
 };

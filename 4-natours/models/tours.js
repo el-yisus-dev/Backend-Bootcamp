@@ -8,11 +8,12 @@ const tourSchema = new Schema(
       unique: [true, 'this name already exists'],
     },
     rating: {
-      type: String,
+      type: Number,
+      default: 3.5,
     },
     price: {
-      type: String,
-      min: [0.1, 'The cannot be 0'],
+      type: Number,
+      min: [0.1, 'The can not be 0'],
     },
   },
   {
