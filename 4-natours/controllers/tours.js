@@ -1,6 +1,7 @@
 /* eslint-disable node/no-unsupported-features/es-syntax */
 const fs = require('fs');
 const { Tour } = require('../models/tours');
+const { default: mongoose } = require('mongoose');
 
 const getAllTours = async (req, res) => {
   const tours = await Tour.find();
@@ -35,14 +36,14 @@ const createTours = async (req, res) => {
   });
 };
 
-const getTourById = (req, res) => {
+const getTourById = async (req, res) => {
   const { id } = res.locals;
 
-  const tours = JSON.parse(
-    fs.readFileSync(`${__dirname}/../dev-data/tours-simple.json`),
-  ).find((element) => element.id === id);
+  const tour = await Tour.findOne({
+    _id: id,
+  });
 
-  if (!tours) {
+  if (!tour) {
     return res.status(404).json({
       status: 'fail',
       message: 'Tour not found',
@@ -51,7 +52,7 @@ const getTourById = (req, res) => {
 
   res.json({
     status: 'success',
-    data: tours,
+    data: tour,
   });
 };
 
@@ -101,14 +102,14 @@ const deleteTour = (req, res) => {
 };
 
 const checkId = (req, res, next, val) => {
-  if (Number.isNaN(Number(val))) {
+  if (!mongoose.isValidObjectId(val)) {
     return res.status(400).json({
       status: 'error',
       message: 'Please introduce a valid ID',
     });
   }
 
-  res.locals.id = Number(val);
+  res.locals.id = val;
 
   next();
 };
