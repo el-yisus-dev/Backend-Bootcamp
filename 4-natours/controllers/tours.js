@@ -1,7 +1,6 @@
 /* eslint-disable node/no-unsupported-features/es-syntax */
-const fs = require('fs');
-const { Tour } = require('../models/tours');
 const { default: mongoose } = require('mongoose');
+const { Tour } = require('../models/tours');
 
 const getAllTours = async (req, res) => {
   const tours = await Tour.find();
@@ -56,48 +55,42 @@ const getTourById = async (req, res) => {
   });
 };
 
-const updateTour = (req, res) => {
+const updateTour = async (req, res) => {
   const { id } = res.locals;
 
-  const tours = JSON.parse(
-    fs.readFileSync(`${__dirname}/../dev-data/tours-simple.json`),
+  const { name, rating, price } = req.body;
+
+  const tour = await Tour.findByIdAndUpdate(
+    {
+      _id: id,
+    },
+    {
+      name,
+      rating,
+      price,
+    },
   );
 
-  const tourExists = tours.find((t) => t.id === id);
-
-  if (!tourExists) {
+  if (!tour) {
     return res.status(404).json({
       status: 'fail',
       message: 'Tour not found',
     });
   }
 
-  const updatedTours = tours.map((tour) =>
-    tour.id === id ? { ...tour, ...req.body } : tour,
-  );
-
-  fs.writeFileSync(
-    `${__dirname}/../dev-data/tours-simple.json`,
-    JSON.stringify(updatedTours, null, 2),
-  );
-
   res.status(200).json({
     status: 'success',
-    data: {
-      tour: updatedTours.find((t) => t.id === id),
-    },
+    message: 'Tour updated successfully',
   });
 };
 
-const deleteTour = (req, res) => {
+const deleteTour = async (req, res) => {
   const { id } = res.locals;
+  await Tour.findByIdAndDelete(id);
 
   res.status(200).json({
     status: 'success',
-    data: {
-      id,
-      tour: null,
-    },
+    message: 'Tour deleted',
   });
 };
 
