@@ -17,22 +17,27 @@ const getAllTours = async (req, res) => {
 
 const createTours = async (req, res) => {
   const { name, rating, price } = req.body;
+  try {
+    const newTour = new Tour({
+      name,
+      rating,
+      price,
+    });
 
-  const newTour = new Tour({
-    name,
-    rating,
-    price,
-  });
+    const newTourData = await newTour.save();
 
-  const newTourData = await newTour.save();
-
-  res.status(201).json({
-    status: 'success',
-    message: 'New tour created 👍',
-    data: {
-      tour: newTourData,
-    },
-  });
+    res.status(201).json({
+      status: 'success',
+      message: 'New tour created 👍',
+      data: {
+        tour: newTourData,
+      },
+    });
+  } catch (error) {
+    res.status(400).json({
+      message: 'A error ocurred',
+    });
+  }
 };
 
 const getTourById = async (req, res) => {
