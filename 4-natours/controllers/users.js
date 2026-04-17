@@ -1,3 +1,5 @@
+const { User } = require('../models/users');
+
 exports.getAllUsers = async (req, res) => {
   res.status(200).json({
     message: 'success',
@@ -8,12 +10,26 @@ exports.getAllUsers = async (req, res) => {
 };
 
 exports.createUser = async (req, res) => {
-  res.status(200).json({
-    message: 'success',
-    data: {
-      message: 'users baby.....',
-    },
-  });
+  const { name, lastName, email, username } = req.body;
+  try {
+    const newUser = new User({
+      name,
+      lastName,
+      email,
+      username,
+    });
+
+    await newUser.save();
+
+    res.status(200).json({
+      message: 'success',
+      data: {
+        newUser,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 exports.getUserById = async (req, res) => {
