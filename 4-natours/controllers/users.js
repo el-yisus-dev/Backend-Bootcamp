@@ -1,10 +1,13 @@
+const { default: mongoose } = require('mongoose');
 const { User } = require('../models/users');
 
 exports.getAllUsers = async (req, res) => {
+  const users = await User.find();
+
   res.status(200).json({
     message: 'success',
     data: {
-      message: 'users baby.....',
+      users,
     },
   });
 };
@@ -35,29 +38,66 @@ exports.createUser = async (req, res) => {
 exports.getUserById = async (req, res) => {
   const { id } = req.params;
 
+  if (!mongoose.isValidObjectId(id)) {
+    res.status(400).json({
+      status: 'error',
+      message: 'Invalid id',
+    });
+  }
+
+  const user = await User.findById(id);
+
   res.status(200).json({
     message: 'success',
     data: {
-      message: 'users baby.....',
-      id,
+      user,
     },
   });
 };
 
 exports.updateUser = async (req, res) => {
+  const { id } = req.params;
+
+  const { name, lastName, username, email } = req.body;
+
+  if (!mongoose.isValidObjectId(id)) {
+    res.status(400).json({
+      status: 'error',
+      message: 'Invalid id',
+    });
+  }
+
+  await User.findByIdAndUpdate(id, {
+    name,
+    lastName,
+    username,
+    email,
+  });
+
   res.status(200).json({
     message: 'success',
     data: {
-      message: 'users baby.....',
+      message: 'user updated successfully',
     },
   });
 };
 
 exports.deleteUser = async (req, res) => {
+  const { id } = req.params;
+
+  if (!mongoose.isValidObjectId(id)) {
+    res.status(400).json({
+      status: 'error',
+      message: 'Invalid id',
+    });
+  }
+
+  await User.findByIdAndDelete(id);
+
   res.status(200).json({
     message: 'success',
     data: {
-      message: 'users baby.....',
+      message: 'users deleted successfully',
     },
   });
 };
